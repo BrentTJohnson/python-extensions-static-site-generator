@@ -19,6 +19,6 @@ def written():
 @hooks.register("stats")
 def stats():
     final_time = time.localtime() - start_time
-    average = final_time // total_written if total_written != 0
+    average = final_time / total_written if total_written != 0
     report = f"Converted: {total_written} · Time: {final_time:.2f} sec · Avg: {average:.4f} sec/file"
     return report
