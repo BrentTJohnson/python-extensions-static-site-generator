@@ -1,5 +1,5 @@
 import sys
-from ssg import extensions
+from ssg import extensions, hooks
 from pathlib import Path
 
 
@@ -24,11 +24,13 @@ class Site:
             parser.parse(path, self.source, self.dest)
         else:
             self.error(
-                "No parser for the {} extension, file skipped!".format(path.suffix)
-            )
+                "No parser for the {} extension,"
+                "file skipped!".format(path.suffix)
+                )
 
     def build(self):
         extensions.load_bundled()
+        hooks.event("collect_files", self.source, self.parsers)
         self.dest.mkdir(parents=True, exist_ok=True)
         for path in self.source.rglob("*"):
             if path.is_dir():
